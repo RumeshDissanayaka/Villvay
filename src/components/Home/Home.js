@@ -6,8 +6,6 @@ import { Spin, Alert } from 'antd';
 import { Card } from 'antd';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import 'react-perfect-scrollbar/dist/css/styles.css';
-
-
 import './index.css'
 
 class Home extends Component {
