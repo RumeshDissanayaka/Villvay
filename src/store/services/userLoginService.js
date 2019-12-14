@@ -1,7 +1,6 @@
 import axios from 'axios';
 
 
-
 export const userLogin = async (data, callback) => {
   const userCreationRequest = {
     email: data.obj.email,

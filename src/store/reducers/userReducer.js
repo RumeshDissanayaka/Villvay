@@ -1,5 +1,4 @@
 import * as actionType from '../../constants/actionTypes';
-
 import {
     updateObject
 } from "../utility";

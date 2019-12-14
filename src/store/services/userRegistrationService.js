@@ -1,7 +1,5 @@
 import axios from 'axios';
 
-
-
 export const userRegistration = async (data, callback) => {
   const userCreationRequest = {
     firstName: data.obj.firstName,

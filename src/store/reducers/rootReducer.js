@@ -5,7 +5,6 @@ import {
     USER_LOGOUT,
     CLEAN_HISTORY_DATA
 } from '../../constants/actionTypes';
-// import amWebSocketReducer from './amWebSocketReducer'
 
 const appReducer = combineReducers({
     user: userReducer
