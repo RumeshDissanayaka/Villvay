@@ -18,6 +18,8 @@ import { regex } from '../../constants/regex';
 import { connect } from 'react-redux';
 import { userLoginRequest } from '../../store/actions/user';
 import GoogleLogin from 'react-google-login';
+import LoadingBar from 'react-top-loading-bar';
+
 
 
 const useStyles = makeStyles(theme => ({
@@ -77,18 +79,21 @@ class Signup extends Component {
     const isMandatory = (email && firstName && lastName && password)
     if (isMandatory) {
       if (isValidEmail) {
+        this.startFetch();
         let obj = this.state
         userRegistration({ obj }, res => {
           if (res.Message) {
+            this.onFinishFetch();
             message.error(res.Message)
           }
           else {
             if (res.status == 200) {
+              this.onFinishFetch();
               console.log(res.data.data)
               this.props.onUserLoginRequest(res.data)
               setTimeout(() => {
                 this.props.history.push('/home')
-              }, 2000)
+              }, 1000)
               message.success('User register successfully')
             }
           }
@@ -123,10 +128,12 @@ class Signup extends Component {
   }
 
   responseGoogle = (response) => {
+    this.startFetch();
     if (response.error) {
       message.error(response.error)
     }
     else {
+      this.onFinishFetch();
       let obj = {
         id: response.googleId,
         token: response.tokenId
@@ -134,13 +141,22 @@ class Signup extends Component {
       this.props.onUserLoginRequest(obj)
       setTimeout(() => {
         this.props.history.push('/home')
-      }, 2000)
+      }, 1000)
       message.success('User Login successfully')
     }
+  }
+
+  startFetch = () => {
+    this.LoadingBar.continuousStart()
+  }
+
+  onFinishFetch = () => {
+    this.LoadingBar.complete()
   }
   render() {
     return (
       <div style={{ marginTop: 100 }}>
+        <LoadingBar onRef={ref => (this.LoadingBar = ref)} />
         <Container component="main" maxWidth="xs">
           <CssBaseline />
           <div className={useStyles.paper}>

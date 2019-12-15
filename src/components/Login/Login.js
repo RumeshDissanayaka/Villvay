@@ -14,9 +14,11 @@ import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import GoogleLogin from 'react-google-login';
 import { connect } from 'react-redux';
-import { cleanHistoryData,userLoginRequest } from '../../store/actions/user';
+import { cleanHistoryData, userLoginRequest } from '../../store/actions/user';
 import { userLogin } from '../../store/services/userLoginService';
-import { message } from 'antd'
+import { message } from 'antd';
+import LoadingBar from 'react-top-loading-bar';
+
 
 
 const useStyles = makeStyles(theme => ({
@@ -63,7 +65,9 @@ class Login extends Component {
     );
   }
   responseGoogle = (response) => {
+    this.startFetch();
     if (response.error) {
+      this.onFinishFetch();
       message.error(response.error)
     }
     else {
@@ -74,7 +78,8 @@ class Login extends Component {
       this.props.onUserLoginRequest(obj)
       setTimeout(() => {
         this.props.history.push('/home')
-      }, 2000)
+      }, 1000)
+      this.onFinishFetch();
       message.success('User Login successfully')
     }
   }
@@ -83,6 +88,7 @@ class Login extends Component {
     await this.props.onCleanHistoryData();
   }
   loginHandler = () => {
+    this.startFetch();
     let obj = this.state
     userLogin({ obj }, res => {
       if (res.Message) {
@@ -90,6 +96,7 @@ class Login extends Component {
       }
       else {
         if (res.status == 200) {
+          this.onFinishFetch();
           //4 is hard code bcz only get token.there is no fake api call to get user using token
           let obj = {
             id: 4,
@@ -98,7 +105,7 @@ class Login extends Component {
           this.props.onUserLoginRequest(obj)
           setTimeout(() => {
             this.props.history.push('/home')
-          }, 2000)
+          }, 1000)
           message.success('User Login successfully')
         }
       }
@@ -110,9 +117,17 @@ class Login extends Component {
       [e.target.id]: e.target.value
     })
   }
+  startFetch = () => {
+    this.LoadingBar.continuousStart()
+  }
+
+  onFinishFetch = () => {
+    this.LoadingBar.complete()
+  }
   render() {
     return (
       <div style={{ marginTop: 100 }}>
+        <LoadingBar onRef={ref => (this.LoadingBar = ref)} />
         <Container component="main" maxWidth="xs">
           <CssBaseline />
           <div className={useStyles.paper}>
@@ -202,7 +217,7 @@ class Login extends Component {
 }
 const mapDispatchToProps = dispatch => {
   return {
-    onUserLoginRequest:(res) => dispatch(userLoginRequest(res)),
+    onUserLoginRequest: (res) => dispatch(userLoginRequest(res)),
     onCleanHistoryData: () => dispatch(cleanHistoryData()),
   }
 }
