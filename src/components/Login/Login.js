@@ -126,7 +126,7 @@ class Login extends Component {
   }
   render() {
     return (
-      <div style={{ marginTop: 100 }}>
+      <div>
         <LoadingBar onRef={ref => (this.LoadingBar = ref)} />
         <Container component="main" maxWidth="xs">
           <CssBaseline />

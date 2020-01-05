@@ -3,7 +3,6 @@ import Signup from '../components/Signup/Signup';
 import Home from '../components/Home/Home';
 import ErrorPage from '../components/Error/ErrorPage';
 
-
 const routers = [
   {
     path: '/',

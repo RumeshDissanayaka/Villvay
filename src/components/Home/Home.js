@@ -26,7 +26,7 @@ class Home extends Component {
     </Spin>
     return (
       <div class="container">
-        <div style={{ marginTop: 30 }}>
+        <div>
           {users.length > 0 ?
             <PerfectScrollbar>
               <div style={{ height: 500 }}>

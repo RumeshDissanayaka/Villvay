@@ -4,54 +4,41 @@ import routes from './routes/router';
 import { Helmet } from "react-helmet";
 import Navigation from './components/Navigation/Navigation';
 import { connect } from 'react-redux';
+import Login from './components/Login/Login';
+import Signup from './components/Signup/Signup';
+import Home from './components/Home/Home';
+import ErrorPage from './components/Error/ErrorPage';
+import PaginationDemo from './components/Pagination/Pagination'
+import { store } from './index'
 
 
-class Root extends Component {
-    render() {
-        const PrivateRoute = ({ component: Component, ...rest }) => {
-            return (
-                <Route {...rest} render={(props) => (
-                    (this.props.isAuthenticated === true ? <Component {...props} /> : <Redirect to='/' />
-                    )
-                )} />
-            );
-        };
-        return (
-            <div>
-                <Helmet>
-                    <meta charSet="utf-8" />
-                    <title>Villvay POC</title>
-                </Helmet>
-                <Navigation history={this.props.history} />
-                <Router>
-                    <Switch>
-                        {
-                            routes.map((route) => (
-                                route.path == '/home' ?
-                                    <PrivateRoute
-                                        exact
-                                        key={route.path}
-                                        path={route.path}
-                                        component={route.component}
-                                    /> :
-                                        <Route
-                                            exact
-                                            key={route.path}
-                                            path={route.path}
-                                            component={route.component}
-                                        /> 
-                            ))
-                        }
-                    </Switch>
-                </Router>
-            </div>
-        );
-    }
+
+export default function Root() {
+    return (
+        <div>   <Helmet>
+            <meta charSet="utf-8" />
+            <title>Villvay POC</title>
+        </Helmet>
+            <Switch>
+                <Route component={Login} path="/" exact />
+                <Route component={Signup} path="/signup" exact />
+                <Route component={PaginationDemo} path="/pagination" exact />
+                <PrivateRoute component={Home} path="/home" exact />
+                <Route component={ErrorPage} path="*" exact />
+            </Switch>
+        </div>
+    );
 }
 
-const mapStateToProps = state => {
-    return {
-        isAuthenticated: state.user.isAuthenticated
-    };
-}
-export default connect(mapStateToProps, null)(Root);
+
+
+const PrivateRoute = ({ component: Component, ...rest }) => {
+    let state = store.getState()
+    return (
+        <Route {...rest} render={(props) => (
+            (state.user.isAuthenticated === true ? <Component {...props} /> : <Redirect to='/' />
+            )
+        )} />
+    );
+};
+

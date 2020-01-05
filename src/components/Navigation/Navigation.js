@@ -18,7 +18,7 @@ class Navigation extends Component {
             <Nav.Link href="#pricing">Pricing</Nav.Link> */}
           </Nav>
           <Form inline>
-            {isAuthenticated ? <Nav.Link href="/">Logout</Nav.Link> : <Nav.Link href="/signup">Sign up</Nav.Link>}
+            {/* {isAuthenticated ? <Nav.Link href="/">Logout</Nav.Link> : <Nav.Link href="/signup">Sign up</Nav.Link>} */}
             <Nav.Link href="#">About</Nav.Link>
           </Form>
         </Navbar>

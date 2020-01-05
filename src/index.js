@@ -14,6 +14,7 @@ import { PersistGate } from 'redux-persist/integration/react';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import "antd/dist/antd.css";
+//import { render } from "react-dom";
 
 
 const persistConfig = {
@@ -22,8 +23,13 @@ const persistConfig = {
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
-const store = createStore(persistedReducer, composeWithDevTools(applyMiddleware(thunk)));
+export const store = createStore(persistedReducer, composeWithDevTools(applyMiddleware(thunk)));
 const persistor = persistStore(store);
-const app = (<Provider store={store}><PersistGate loading={null} persistor={persistor}><InitRoot /></PersistGate></Provider>);
-ReactDOM.render(app, document.getElementById('root'));
+// render(
+//     <Provider store={store}><PersistGate loading={null} persistor={persistor}><App /></PersistGate></Provider>,
+//     document.getElementById("root")
+
+// )
+ReactDOM.render(<Provider store={store}><PersistGate loading={null} persistor={persistor}><App /></PersistGate></Provider>, document.getElementById('root'));
 serviceWorker.unregister();
+
